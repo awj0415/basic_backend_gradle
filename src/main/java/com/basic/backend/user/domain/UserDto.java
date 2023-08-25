@@ -1,13 +1,13 @@
 package com.basic.backend.user.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 public class UserDto {
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     @Getter
     @Setter
