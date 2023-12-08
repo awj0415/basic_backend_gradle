@@ -3,6 +3,7 @@ package com.basic.backend.user.web;
 import com.basic.backend.user.domain.UserDto;
 import com.basic.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    // todo
+//    @Value("${spring.test.profile-name}")
+//    private final String profileName;
+
+//    @GetMapping("/profiles")
+//    public ResponseEntity<String> getProfiles() { return ResponseEntity.ok(profileName); }
 
     @PostMapping("/user")
     public ResponseEntity<UserDto.UserAddRes> add(@RequestBody UserDto.UserAddReq request) {

@@ -11,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,11 +24,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
@@ -39,9 +41,18 @@ public class UserControllerTest {
 
     private MockMvc mockMvc;
 
+    @Value("${spring.test.profile-name}")
+    private String profileName;
+
     @BeforeEach
     public void init() {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    }
+
+    @DisplayName("profile 확인")
+    @Test
+    void getPropertiesConfirm() {
+        System.out.printf("profileName : " + profileName);
     }
 
     @DisplayName("회원 가입 성공")
