@@ -12,8 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -76,14 +79,14 @@ public class UserControllerTest {
         // then
         MvcResult mvcResult = resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("userSeq", response.getUserSeq()).exists())
-                .andExpect(jsonPath("id", response.getId()).exists())
+                .andExpect(jsonPath("id", response.getUserId()).exists())
                 .andExpect(jsonPath("password", response.getPassword()).exists())
                 .andReturn();
     }
 
     private UserDto.UserAddReq getUserAddRequest() {
         return UserDto.UserAddReq.builder()
-                .id("id")
+                .userId("id")
                 .password("password")
                 .name("name")
                 .phone("phone")
@@ -94,7 +97,7 @@ public class UserControllerTest {
     private UserDto.UserAddRes getUserAddResponse() {
         return UserDto.UserAddRes.builder()
                 .userSeq(1L)
-                .id("id")
+                .userId("id")
                 .password("password")
                 .build();
     }
@@ -103,36 +106,44 @@ public class UserControllerTest {
     @Test
     void getUserList() throws Exception {
         // given
-        List<UserDto.UserRes> users = getUsers();
-        doReturn(users)
+        Pageable pageable = PageRequest.of(0, 1);
+        Page<UserDto.UserRes> pUsers = getUsers();
+        doReturn(pUsers)
                 .when(userService)
-                .getList();
+                .getUsers(pageable);
+        System.out.println("given!");
 
+        // todo No primary or single unique constructor found for interface org.springframework.data.domain.Pageable
         // when
         ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.get("/users")
+                        .param("page", "0")
+                        .param("size", "1")
         );
+        System.out.println("when!");
 
         // then
         MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
 
         List<UserDto.UserRes> userList = new Gson().fromJson(mvcResult.getResponse().getContentAsString(), List.class);
-        assertThat(userList.size()).isEqualTo(5);
+        assertThat(userList.size()).isEqualTo(1);
     }
 
-    private List<UserDto.UserRes> getUsers() {
-        List<UserDto.UserRes> userList = new ArrayList<>();
+    private Page<UserDto.UserRes> getUsers() {
+        List<UserDto.UserRes> users = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             UserDto.UserRes userRes = UserDto.UserRes.builder()
-                    .id("id" + i)
+                    .userId("id" + i)
                     .name("name" + i)
                     .phone("phone" + i)
                     .email("email" + i)
                     .createDate(new Date())
                     .build();
-            userList.add(userRes);
+            users.add(userRes);
         }
-        return userList;
+
+        Page<UserDto.UserRes> pUsers = new PageImpl<>(users);
+        return pUsers;
     }
 
 

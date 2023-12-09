@@ -7,10 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -34,14 +36,14 @@ public class UserRepositoryTest {
         User savedUser = userRepository.save(user);
 
         // then
-        assertThat(savedUser.getId()).isEqualTo(user.getId());
+        assertThat(savedUser.getUserId()).isEqualTo(user.getUserId());
         assertThat(savedUser.getEmail()).isEqualTo(user.getEmail());
         assertThat(savedUser.getName()).isEqualTo(user.getName());
     }
 
     private User user() {
         return User.builder()
-                .id("id")
+                .userId("id")
                 .password("password")
                 .name("name")
                 .phone("phone")
@@ -55,12 +57,14 @@ public class UserRepositoryTest {
     void findAll() {
         // given
         userRepository.save(user());
+        Pageable pageable = PageRequest.of(0, 1);
 
         // when
-        List<User> userList = userRepository.findAll();
+        Page<User> pUsers = userRepository.findAll(pageable);
+        System.out.println("size >> " + pUsers.getContent().size());
 
         // then
-        assertThat(userList.size()).isEqualTo(2);
+        assertThat(pUsers.getContent().size()).isEqualTo(1);
     }
 
     @DisplayName("사용자 조회")
@@ -75,7 +79,7 @@ public class UserRepositoryTest {
 
         // then
         assertThat(oUser.isPresent()).isEqualTo(true);
-        assertThat(oUser.get().getId()).isEqualTo("id");
+        assertThat(oUser.get().getUserId()).isEqualTo("id");
     }
 
     @DisplayName("사용자 수정")

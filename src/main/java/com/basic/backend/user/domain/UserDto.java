@@ -1,6 +1,8 @@
 package com.basic.backend.user.domain;
 
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
@@ -13,7 +15,7 @@ public class UserDto {
     @Setter
     public static class UserAddReq {
 
-        private String id;
+        private String userId;
 
         private String password;
 
@@ -32,7 +34,7 @@ public class UserDto {
 
         private Long userSeq;
 
-        private String id;
+        private String userId;
 
         private String password;
 
@@ -43,7 +45,7 @@ public class UserDto {
     @Setter
     public static class  UserRes {
 
-        private String id;
+        private String userId;
 
         private String name;
 
@@ -52,6 +54,27 @@ public class UserDto {
         private String email;
 
         private Date createDate;
+
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+        }
+
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class UserUdtReq {
+
+        private String userId;
+
+        private String password;
+
+        private String name;
+
+        private String phone;
+
+        private String email;
 
     }
 
