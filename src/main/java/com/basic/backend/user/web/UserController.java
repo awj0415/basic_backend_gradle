@@ -7,10 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +33,22 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDto.UserRes>> getUsers(@PageableDefault(page = 1) Pageable pageable) {
         return ResponseEntity.ok(userService.getUsers(pageable).getContent());
+    }
+
+    @GetMapping("/users/{userSeq}")
+    public ResponseEntity<UserDto.UserRes> getUser(@PathVariable(name = "userSeq") Long userSeq) throws Exception {
+        return ResponseEntity.ok(userService.getUser(userSeq));
+    }
+
+    @PutMapping("/user")
+    public ResponseEntity<UserDto.UserRes> update(@RequestBody UserDto.UserUdtReq userUdtReq) {
+        return ResponseEntity.ok(userService.update(userUdtReq));
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<?> remove(@PathVariable(name = "userId") String userId) {
+        userService.remove(userId);
+        return ResponseEntity.ok(null);
     }
 
 }

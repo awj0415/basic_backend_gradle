@@ -24,11 +24,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,9 +79,10 @@ public class UserControllerTest {
         // then
         MvcResult mvcResult = resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("userSeq", response.getUserSeq()).exists())
-                .andExpect(jsonPath("id", response.getUserId()).exists())
+                .andExpect(jsonPath("userId", response.getUserId()).exists())
                 .andExpect(jsonPath("password", response.getPassword()).exists())
                 .andReturn();
+        System.out.println("addSuccess >> " + mvcResult.getResponse().getContentAsString());
     }
 
     private UserDto.UserAddReq getUserAddRequest() {
@@ -137,13 +138,101 @@ public class UserControllerTest {
                     .name("name" + i)
                     .phone("phone" + i)
                     .email("email" + i)
-                    .createDate(new Date())
+//                    .createDate(new Date())
                     .build();
             users.add(userRes);
         }
 
         Page<UserDto.UserRes> pUsers = new PageImpl<>(users);
         return pUsers;
+    }
+
+    @DisplayName("사용자 조회")
+    @Test
+    void getUser() throws Exception {
+        // given
+        Long userSeq = 1L;
+        doReturn(UserDto.UserRes.builder()
+                .userId("userId")
+                .name("name")
+                .phone("phone")
+                .email("email")
+//                .createDate(new Date())
+                .build())
+                .when(userService)
+                .getUser(userSeq);
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/" + userSeq)
+        );
+
+        // then
+        MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
+
+        UserDto.UserRes user = new Gson().fromJson(mvcResult.getResponse().getContentAsString(), UserDto.UserRes.class);
+        assertThat(user.getUserId()).isEqualTo("userId");
+    }
+
+    @DisplayName("사용자 수정")
+    @Test
+    void update() throws Exception {
+        // given
+        UserDto.UserUdtReq req = UserDto.UserUdtReq.builder()
+                .userId("userId")
+                .name("name1")
+                .phone("phone1")
+                .email("email1")
+                .build();
+        UserDto.UserRes res = UserDto.UserRes.builder()
+                .userId("userId")
+                .name("name1")
+                .phone("phone1")
+                .email("email1")
+                .build();
+
+        doReturn(UserDto.UserRes.builder()
+                .userId(res.getUserId())
+                .name(res.getName())
+                .phone(res.getPhone())
+                .email(res.getEmail())
+                .build())
+                .when(userService)
+                .update(any(UserDto.UserUdtReq.class));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/user")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(req))
+        );
+
+        // then
+        MvcResult mvcResult = resultActions.andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("userId", res.getUserId()).exists())
+                .andExpect(jsonPath("name", res.getName()).exists())
+                .andExpect(jsonPath("phone", res.getPhone()).exists())
+                .andExpect(jsonPath("email", res.getEmail()).exists())
+                .andReturn();
+    }
+
+    @DisplayName("사용자 삭제")
+    @Test
+    void remove() throws Exception {
+        // given
+        String userId = "userId";
+        doNothing()
+                .when(userService)
+                .remove(any(String.class));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/users/" + userId)
+        );
+
+        // then
+        MvcResult mvcResult = resultActions.andExpect(status().isOk())
+                .andReturn();
     }
 
 

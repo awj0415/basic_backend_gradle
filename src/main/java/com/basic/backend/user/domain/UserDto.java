@@ -4,8 +4,6 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Date;
-
 public class UserDto {
 
     @AllArgsConstructor
@@ -53,7 +51,7 @@ public class UserDto {
 
         private String email;
 
-        private Date createDate;
+//        private Date createDate;
 
         public String toString() {
             return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
@@ -64,6 +62,8 @@ public class UserDto {
     @Getter
     @Setter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UserUdtReq {
 
         private String userId;

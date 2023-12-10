@@ -46,7 +46,7 @@ public class UserService {
                 .name(user.getName())
                 .phone(user.getPhone())
                 .email(user.getEmail())
-                .createDate(user.getCreateDate())
+//                .createDate(user.getCreateDate())
                 .build());
     }
 
@@ -58,7 +58,7 @@ public class UserService {
                 .name(user.getName())
                 .phone(user.getPhone())
                 .email(user.getEmail())
-                .createDate(user.getCreateDate())
+//                .createDate(user.getCreateDate())
                 .build())
                 .orElseThrow(Exception::new);
     }
@@ -79,7 +79,7 @@ public class UserService {
                 .name(rUser.getName())
                 .phone(rUser.getPhone())
                 .email(rUser.getEmail())
-                .createDate(rUser.getCreateDate())
+//                .createDate(rUser.getCreateDate())
                 .build();
     }
 
