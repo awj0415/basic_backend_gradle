@@ -10,7 +10,7 @@ spring:
     profile-name : local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/basic_backend?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/basic_backend?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: basic
     password: 1234
   jpa:
@@ -34,7 +34,7 @@ spring:
     profile-name : dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/basic_backend?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/basic_backend?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: basic
     password: 1234
   jpa:
