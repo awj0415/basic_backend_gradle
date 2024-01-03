@@ -4,6 +4,8 @@ import com.basic.backend.user.domain.UserDto;
 import com.basic.backend.user.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,11 @@ public class UserController {
 
     private final UserService userService;
 
-    // todo
-//    @Value("${spring.test.profile-name}")
-//    private final String profileName;
+    @Value("${spring.test.profile-name}")
+    private String profileName;
 
-//    @GetMapping("/profiles")
-//    public ResponseEntity<String> getProfiles() { return ResponseEntity.ok(profileName); }
+    @GetMapping("/profiles")
+    public ResponseEntity<String> getProfiles() { return ResponseEntity.ok(profileName); }
 
     @ApiOperation(
             value = "사용자 등록",
@@ -42,26 +43,29 @@ public class UserController {
             value = "사용자 리스트 조회",
             notes = "사용자 리스트를 조회한다 (페이징)"
     )
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name="page",
-            value = "요청 페이지",
-            dataType = "Integer",
-            paramType = "query", // query:@RequestParam, path:@PathVariable
-            defaultValue = "0"
-        ),
-        @ApiImplicitParam(
-            name="size",
-            value = "row 개수",
-            dataType = "Integer",
-            paramType = "query",
-            defaultValue = "10"
-        )
-    })
+//    @ApiImplicitParams({
+//        @ApiImplicitParam(
+//            name="page",
+//            value = "요청 페이지",
+//            dataType = "Integer",
+//            paramType = "query", // query:@RequestParam, path:@PathVariable
+//            defaultValue = "0"
+//        ),
+//        @ApiImplicitParam(
+//            name="size",
+//            value = "row 개수",
+//            dataType = "Integer",
+//            paramType = "query",
+//            defaultValue = "10"
+//        )
+//    })
     @ApiResponse(code = 200, message = "성공입니다")
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto.UserRes>> getUsers(@ApiIgnore @PageableDefault(page = 1) Pageable pageable) {
-        return ResponseEntity.ok(userService.getUsers(pageable).getContent());
+    public ResponseEntity<UserDto.GetUsersRes> getUsers(
+//            @ApiIgnore @PageableDefault(page = 1) Pageable pageable
+            UserDto.GetUsersReq req
+    ) {
+        return ResponseEntity.ok(userService.getUsers(req));
     }
 
     @ApiOperation(

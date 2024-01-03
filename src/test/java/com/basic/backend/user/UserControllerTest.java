@@ -111,7 +111,7 @@ public class UserControllerTest {
         Page<UserDto.UserRes> pUsers = getUsers();
         doReturn(pUsers)
                 .when(userService)
-                .getUsers(pageable);
+                .getUsersOld(pageable);
         System.out.println("given!");
 
         // todo No primary or single unique constructor found for interface org.springframework.data.domain.Pageable

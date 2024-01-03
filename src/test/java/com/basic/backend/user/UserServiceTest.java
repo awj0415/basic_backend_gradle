@@ -85,7 +85,7 @@ public class UserServiceTest {
                 .findAll(pageable);
 
         // when
-        Page<UserDto.UserRes> pUsers = userService.getUsers(pageable);
+        Page<UserDto.UserRes> pUsers = userService.getUsersOld(pageable);
         System.out.println("size >> " + pUsers.getContent().size());
 
         // then
