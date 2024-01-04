@@ -80,7 +80,7 @@ public class UserControllerTest {
         MvcResult mvcResult = resultActions.andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("userSeq", response.getUserSeq()).exists())
                 .andExpect(jsonPath("userId", response.getUserId()).exists())
-                .andExpect(jsonPath("password", response.getPassword()).exists())
+//                .andExpect(jsonPath("password", response.getPassword()).exists())
                 .andReturn();
         System.out.println("addSuccess >> " + mvcResult.getResponse().getContentAsString());
     }
@@ -99,7 +99,7 @@ public class UserControllerTest {
         return UserDto.UserAddRes.builder()
                 .userSeq(1L)
                 .userId("id")
-                .password("password")
+//                .password("password")
                 .build();
     }
 

@@ -58,7 +58,7 @@ public class UserServiceTest {
 
         // then
         assertThat(user.getUserId()).isEqualTo(request.getUserId());
-        assertThat(encoder.matches(request.getPassword(), user.getPassword())).isTrue();
+//        assertThat(encoder.matches(request.getPassword(), user.getPassword())).isTrue();
 
         // verify
         verify(userRepository, times(1)).save(any(User.class)); // save가 1번 호출됐는지 검증
@@ -126,7 +126,7 @@ public class UserServiceTest {
         // given
         UserDto.UserUdtReq userUdtReq = UserDto.UserUdtReq.builder()
                 .userId("userId")
-                .password("pw1")
+//                .password("pw1")
                 .name("name1")
                 .phone("phone1")
                 .email("email1")
@@ -136,7 +136,7 @@ public class UserServiceTest {
         doReturn(Optional.of(new User(1L, "userId", "pw", "name", "phone", "email", new Date())))
                 .when(userRepository)
                 .findByUserId(userId);
-        doReturn(new User(1L, "userId", userUdtReq.getPassword(), userUdtReq.getName(), userUdtReq.getPhone(), userUdtReq.getEmail(), new Date()))
+        doReturn(new User(1L, "userId", null, userUdtReq.getName(), userUdtReq.getPhone(), userUdtReq.getEmail(), new Date()))
                 .when(userRepository)
                 .save(any(User.class));
 

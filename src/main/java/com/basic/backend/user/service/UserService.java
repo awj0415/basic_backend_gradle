@@ -3,6 +3,7 @@ package com.basic.backend.user.service;
 import com.basic.backend.user.domain.User;
 import com.basic.backend.user.domain.UserDto;
 import com.basic.backend.user.repository.UserRepository;
+import com.basic.backend.user.repository.UserRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final UserRepositoryCustom userRepositoryCustom;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -70,6 +73,10 @@ public class UserService {
                 .email(user.getEmail())
                 .build())
                 .getContent();
+
+        // test queryDsl 확인용
+//        List<User> testUsers = userRepositoryCustom.findBySearch(req);
+//        System.out.println("testUsers >> " + testUsers.size());
 
         return UserDto.GetUsersRes.builder()
                 .users(users)
