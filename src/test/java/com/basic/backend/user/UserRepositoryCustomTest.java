@@ -20,7 +20,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ActiveProfiles("local")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CustomUserRepositoryTest {
+public class UserRepositoryCustomTest {
 
     @Autowired
     private UserRepositoryCustom userRepositoryCustom;
