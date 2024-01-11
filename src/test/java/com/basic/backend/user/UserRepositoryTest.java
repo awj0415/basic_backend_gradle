@@ -25,7 +25,6 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    // todo add rollback
     @DisplayName("사용자 추가")
     @Test
     void add() {
@@ -98,7 +97,6 @@ public class UserRepositoryTest {
         assertThat(updatedUser.getName()).isEqualTo("name2");
     }
 
-    // todo delete된게 롤백 되는듯
     @DisplayName("사용자 삭제")
     @Test
     void delete() {

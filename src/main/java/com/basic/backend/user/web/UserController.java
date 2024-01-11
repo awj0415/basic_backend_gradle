@@ -1,5 +1,8 @@
 package com.basic.backend.user.web;
 
+import com.basic.backend.common.config.response.BaseResponse;
+import com.basic.backend.common.config.response.BaseResult;
+import com.basic.backend.common.config.response.BaseResultCode;
 import com.basic.backend.user.domain.UserDto;
 import com.basic.backend.user.service.UserService;
 import io.swagger.annotations.*;
@@ -34,9 +37,8 @@ public class UserController {
     )
     @ApiResponse(code = 201, message = "성공입니다")
     @PostMapping("/user")
-    public ResponseEntity<UserDto.UserAddRes> add(@RequestBody UserDto.UserAddReq request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(userService.add(request));
+    public ResponseEntity<BaseResult<UserDto.UserAddRes>> add(@RequestBody UserDto.UserAddReq request) {
+        return BaseResponse.getResponseEntity(userService.add(request), BaseResultCode.SUCCESS_CREATE);
     }
 
     @ApiOperation(
@@ -61,11 +63,11 @@ public class UserController {
 //    })
     @ApiResponse(code = 200, message = "성공입니다")
     @GetMapping("/users")
-    public ResponseEntity<UserDto.GetUsersRes> getUsers(
+    public ResponseEntity<BaseResult<UserDto.GetUsersRes>> getUsers(
 //            @ApiIgnore @PageableDefault(page = 1) Pageable pageable
             UserDto.GetUsersReq req
     ) {
-        return ResponseEntity.ok(userService.getUsers(req));
+        return BaseResponse.ok(userService.getUsers(req));
     }
 
     @ApiOperation(
@@ -74,8 +76,8 @@ public class UserController {
     )
     @ApiResponse(code = 200, message = "성공입니다")
     @GetMapping("/users/{userSeq}")
-    public ResponseEntity<UserDto.UserRes> getUser(@PathVariable(name = "userSeq") Long userSeq) throws Exception {
-        return ResponseEntity.ok(userService.getUser(userSeq));
+    public ResponseEntity<BaseResult<UserDto.UserRes>> getUser(@PathVariable(name = "userSeq") Long userSeq) throws Exception {
+        return BaseResponse.ok(userService.getUser(userSeq));
     }
 
     @ApiOperation(
@@ -84,8 +86,8 @@ public class UserController {
     )
     @ApiResponse(code = 200, message = "성공입니다")
     @PutMapping("/user")
-    public ResponseEntity<UserDto.UserRes> update(@RequestBody UserDto.UserUdtReq userUdtReq) {
-        return ResponseEntity.ok(userService.update(userUdtReq));
+    public ResponseEntity<BaseResult<UserDto.UserRes>> update(@RequestBody UserDto.UserUdtReq userUdtReq) {
+        return BaseResponse.ok(userService.update(userUdtReq));
     }
 
     @ApiOperation(
@@ -96,7 +98,7 @@ public class UserController {
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<?> remove(@PathVariable(name = "userId") String userId) {
         userService.remove(userId);
-        return ResponseEntity.ok(null);
+        return BaseResponse.ok();
     }
 
 }
