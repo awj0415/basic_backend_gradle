@@ -1,22 +1,23 @@
 package com.basic.backend.user.web;
 
-import com.basic.backend.common.config.response.BaseResponse;
-import com.basic.backend.common.config.response.BaseResult;
-import com.basic.backend.common.config.response.BaseResultCode;
+import com.basic.backend.common.response.BaseResponse;
+import com.basic.backend.common.response.BaseResult;
+import com.basic.backend.common.response.BaseResultCode;
 import com.basic.backend.user.domain.UserDto;
 import com.basic.backend.user.service.UserService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(tags = "사용자 API")
 @RestController
@@ -37,7 +38,13 @@ public class UserController {
     )
     @ApiResponse(code = 201, message = "성공입니다")
     @PostMapping("/user")
-    public ResponseEntity<BaseResult<UserDto.UserAddRes>> add(@RequestBody UserDto.UserAddReq request) {
+    public ResponseEntity<BaseResult<UserDto.UserAddRes>> add(
+            @RequestBody @Valid UserDto.UserAddReq request, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return BaseResponse.getResponseEntity(
+                    BaseResultCode.COMMON_INVALID_PARAMS, bindingResult.getAllErrors());
+        }
         return BaseResponse.getResponseEntity(userService.add(request), BaseResultCode.SUCCESS_CREATE);
     }
 

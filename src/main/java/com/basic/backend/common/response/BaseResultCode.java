@@ -1,4 +1,4 @@
-package com.basic.backend.common.config.response;
+package com.basic.backend.common.response;
 
 import lombok.Getter;
 

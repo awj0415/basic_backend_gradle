@@ -6,6 +6,10 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class UserDto {
@@ -18,19 +22,31 @@ public class UserDto {
     @Setter
     public static class UserAddReq {
 
-        @ApiModelProperty(value="아이디", example = "reali23538", required = true)
+        @NotBlank(message = "ID is required.")
+        @Size(min = 8, max = 20, message = "Please enter your ID between 8 and 20 characters.")
+        @ApiModelProperty(value="ID", example = "reali23538", required = true)
         private String userId;
 
-        @ApiModelProperty(value="패스워드", required = true)
+        @NotBlank(message = "Password is required.")
+        @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
+                message = "The password should be 8 to 20 characters long " +
+                        "and contain upper and lower case letters, numbers, and special characters.")
+        @ApiModelProperty(value="password", required = true)
         private String password;
 
-        @ApiModelProperty(value="이름", example = "홍길동", required = true)
+        @NotBlank(message = "Name is required.")
+        @ApiModelProperty(value="name", example = "James", required = true)
         private String name;
 
-        @ApiModelProperty(value="휴대폰", example = "111-2222-3333", required = true)
+        @NotBlank(message = "Phone is required.")
+        @ApiModelProperty(value="phone", example = "111-2222-3333", required = true)
         private String phone;
 
-        @ApiModelProperty(value="이메일", example = "reali@reali.com", required = true)
+        @NotBlank(message = "Email is required.")
+//        @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$",
+//                message = "The email format is incorrect.")
+        @Email(message = "The email format is incorrect.")
+        @ApiModelProperty(value="email", example = "reali23538@gmail.com", required = true)
         private String email;
 
     }
