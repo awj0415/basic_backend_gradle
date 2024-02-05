@@ -23,6 +23,18 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+cloud:
+  aws:
+    s3:
+      bucket: basicbackendbucket
+    credentials:
+      access-key: AKIA6Q5VVRX6VJ5ONKVG
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
 ---
 

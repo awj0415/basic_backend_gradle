@@ -19,6 +19,10 @@ public class BaseResponse {
 		return getResponseEntity(t, BaseResultCode.SUCCESS, null);
 	}
 
+	public static <T> ResponseEntity<BaseResult<T>> fail(BaseResultCode baseResultCode) {
+		return getResponseEntity(null, baseResultCode);
+	}
+
 	public static <T> ResponseEntity<BaseResult<T>> getResponseEntity(
 			T t, BaseResultCode resultCode) {
 		return getResponseEntity(t, resultCode, null);

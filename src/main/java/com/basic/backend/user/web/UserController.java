@@ -12,12 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Api(tags = "사용자 API")
 @RestController
@@ -107,5 +104,7 @@ public class UserController {
         userService.remove(userId);
         return BaseResponse.ok();
     }
+
+
 
 }
