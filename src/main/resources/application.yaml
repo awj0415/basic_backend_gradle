@@ -28,13 +28,20 @@ cloud:
     s3:
       bucket: basicbackendbucket
     credentials:
-      access-key: AKIA6Q5VVRX6VJ5ONKVG
-      secret-key: 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
+      access-key: AKIA6Q5VVRET5H5ONKVG
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
     stack:
       auto: false
+oauth2:
+  google:
+    client-id: 576976531948-o101aso5o6q4gbdphjgpsmjifn3kb2mg.apps.googleusercontent.com
+    client-secret: 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
+    redirect-uri: http://localhost:8081/auth/google
+    authorization-server-uri: https://oauth2.googleapis.com/token
+    resource-server-uri: https://www.googleapis.com/oauth2/v2/userinfo
 
 ---
 
